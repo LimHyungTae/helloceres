@@ -10,7 +10,7 @@
 
 ### Tutorial의 목적
 
-Ceres Solver를 설치하면 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d 경로에 이미 graph SLAM을 위한 error term을 author가 구현해두었다. 하지만 막상 처음 이용하는 사람이 보면 이해하기가 어려울 수도 있어, step-by-step으로 Ceres Solver를 어떻게 사용하는 지에 대해 배워, 이 라이브러리의 위화감(?)을 없애는 것을 목적으로 합니다
+Ceres Solver를 설치하면 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d 경로에 이미 graph SLAM을 위한 error term을 author가 구현해두었습니다. 하지만 막상 저같이 복잡한 C++ 코드에 익숙치 않은 사람이 이해하기가 어려울 수도 있어, step-by-step으로 Ceres Solver를 어떻게 사용하는 지에 대해 배워, 이 라이브러리의 위화감(?)을 없애는 것을 목적으로 합니다
 
 Original author: Hyungtae Lim (shapelim@kaist.ac.kr) <br>
 Facilitator : Seungwon Song (sswan55@kaist.ac.kr) 
