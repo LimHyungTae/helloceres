@@ -1,5 +1,7 @@
 # Hello Ceres! (한글.ver)
 
+Original author: Hyungtae Lim (shapelim@kaist.ac.kr) <br>
+
 ---
 
 ## C++의 optimization library인 Ceres Solver에 대한 Tutorial
@@ -10,10 +12,12 @@
 
 ### Tutorial의 목적
 
-Ceres Solver를 설치하면 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d 경로에 이미 graph SLAM을 위한 error term을 author가 구현해두었습니다. 하지만 막상 저같이 복잡한 C++ 코드에 익숙치 않은 사람이 이해하기가 어려울 수도 있어, step-by-step으로 Ceres Solver를 어떻게 사용하는 지에 대해 배워, 이 라이브러리의 위화감(?)을 없애는 것을 목적으로 합니다
+Graph SLAM의 optimization 부분이 친근하지 않은 분들께 설명을 위한 자료입니다. 이론 상으로 Graph SLAM을 공부하면 엄청난 수식(?)들에 압도당하기 쉬운데, 사실 non-linear optimization을 Ceres가 해주고 Error term도 Ceres에서 이미 `examples/slam/pose_graph_2d`와 `examples/slam/pose_graph_3d` 경로에 있기 때문에 저희는 사용만 하면 됩니다. :) 
 
-Original author: Hyungtae Lim (shapelim@kaist.ac.kr) <br>
-Facilitator : Seungwon Song (sswan55@kaist.ac.kr) 
+이 레포지토리는 Graph SLAM을 low-level부터 짜고 싶은데, C++ 코드에 익숙치 않아 어려움을 겪으시는 분들께 도움이 될것이라 생각합니다. Step-by-step으로 Ceres Solver를 어떻게 사용하는지 설명드릴 예정입니다.
+
+
+
 
 ---
 
@@ -22,10 +26,14 @@ Facilitator : Seungwon Song (sswan55@kaist.ac.kr)
 http://ceres-solver.org/installation.html 을 따라 하면 된다
 
 
-### Setting
+### Compile
 
 <pre><code>$ cmake CMakeLists.txt</code></pre>
 <pre><code>$ make</code></pre>
+
+### 실행
+
+<pre><code>$ ./${compiled filename}</code></pre>
 
 ### 코드 구성
 
@@ -37,4 +45,4 @@ http://ceres-solver.org/installation.html 을 따라 하면 된다
 
 ### 주의
 
-**helloceres_pose_2d.cc**와 **helloceres_pose_2d_fixed_a.cc**에서 원래는 measurements의 불확실성 또한 인자로 고려하기 위해 information matrix가 곱해져야 완전한 error term이 되지만, 여기서는 tool에 대한 설명을 위해 생략되었습니다. (실제 SLAM을 할 때에는 Ceres 기본 라이브러리 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d에 잘 되어 있어서 error term은 이 헤더파일들을 그대로 사용하시면 되고, 이 깃허브 페이지는 단순히 ceres를 어떻게 사용하는지에 대한 tutorial 자료입니다 :) )
+**helloceres_pose_2d.cc**와 **helloceres_pose_2d_fixed_a.cc**에서 원래는 measurements의 불확실성 또한 인자로 고려하기 위해 information matrix가 곱해져야 완전한 error term이 되지만, 여기서는 tool에 대한 설명을 위해 생략되었습니다. (실제 SLAM을 할 때에는 Ceres 기본 라이브러리 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d에 잘 되어 있어서 error term은 이 헤더파일들을 그대로 사용하시면 되고, 이 깃허브 페이지는 단순히 ceres를 어떻게 사용하는지에 대한 tutorial 자료입니다)
