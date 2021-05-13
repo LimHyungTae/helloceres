@@ -82,6 +82,8 @@ int main(int argc, char** argv) {
 
   // Run the solver!
   Solver::Options options;
+  options.eta = 1e-4;
+  options.function_tolerance = 1e-10;
   options.minimizer_progress_to_stdout = true;
   Solver::Summary summary;
   Solve(options, &problem, &summary);

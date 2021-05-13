@@ -42,6 +42,7 @@ http://ceres-solver.org/installation.html 을 따라 하면 된다
 - **helloceres_euclidian_distance.cc**: 하나의 cost function에서 다변수를 입력값으로 주는 법
 - **helloceres_pose_2d.cc**: 실제로 2D 상의 pose a와 b에 대한 optimization을 하는 예제
 - **helloceres_pose_2d_fixed_a.cc**: helloceres_pose_2d.cc를 실행해보면 예상했던 것과 달리 a와 b 값 둘 다 변경됩니다. 그래서 pose a를 고정시키는 법과, 이걸 통해 SLAM을 하는 데에 있어서 initial Pose의 필요성에 대해 알 수 있습니다.
+- **helloceres_pose_2d_fixed_b.cc**: helloceres_pose_2d_fixed_a.cc에서는 residual을 추가하여 pose a에 더 강한 constraint를 줘서 고정시킨 반면, 이 예제에서는 ceres의 SetParameterBlockConstant()라는 function을 이용하여 a를 고정하는 방식에 대해 알게됩니다.
 
 ### 주의
 

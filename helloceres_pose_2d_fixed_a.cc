@@ -50,7 +50,7 @@ class Pose2dErrorTerm{
     const Eigen::Matrix<T, 2, 1> p_a(a[0], a[1]);
     const Eigen::Matrix<T, 2, 1> p_b(b[0], b[1]);
     
-    Eigen::Matrix<T, 2, 2> R_a; 
+    Eigen::Matrix<T, 2, 2> R_a;
     const T cos = ceres::cos(a[2]);
     const T sin = ceres::sin(a[2]);
     R_a << cos, -sin,
@@ -65,7 +65,9 @@ class Pose2dErrorTerm{
     residual[2] = theta_diff;
     // ##############중요##############
     // ceres_pose_2d에서 optimization을 하면 a와 b가 둘 다 움직여버림.
-    // 따라서 a를 고정시키기 위해 a에 대한 residual을 cost function에 추가함
+    // 따라서 a를 고정시키기 위해 a에 대한 residual을 cost function에 추가함으로써 
+    // a가 최대한 고정되도록할 수 있음. 
+    // 비고: 이 방식은 잘 쓰이지 않습니다. 다음 예제에서 더 흔히 쓰는 방식을 소개함.
     residual[3] = 3.000001 - a[0];
     residual[4] = 1.000001 - a[1];
     residual[5] = 0.523599000001 - a[2];
