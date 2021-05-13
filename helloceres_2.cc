@@ -70,6 +70,7 @@ int main(int argc, char** argv) {
   problem.AddResidualBlock(cost_function, NULL, &x);
 
   Solver::Options options;
+  options.function_tolerance = 1e-10;
   options.minimizer_progress_to_stdout = true;
   Solver::Summary summary;
   Solve(options, &problem, &summary);

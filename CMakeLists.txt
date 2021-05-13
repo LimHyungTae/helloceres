@@ -66,6 +66,8 @@ target_link_libraries(helloceres_pose2d ceres)
 add_executable(helloceres_pose2d_fixed_a helloceres_pose_2d_fixed_a.cc)
 target_link_libraries(helloceres_pose2d_fixed_a ceres)
 
+add_executable(helloceres_pose2d_fixed_b helloceres_pose_2d_fixed_b.cc)
+target_link_libraries(helloceres_pose2d_fixed_b ceres)
 #################
 
 
