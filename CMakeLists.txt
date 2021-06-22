@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.10)
+project(hello_ceres)
 # Ceres Solver - A fast non-linear least squares minimizer
 # Copyright 2015 Google Inc. All rights reserved.
 # http://ceres-solver.org/
@@ -29,15 +30,15 @@ cmake_minimum_required(VERSION 2.8.3)
 #
 # Author: keir@google.com (Keir Mierle)
 
-
+include_directories("/usr/include/eigen3")
 find_package(Ceres REQUIRED)
 include_directories(
  # include
  ${CERES_INCLUDE_DIRS}
 )
 
-
-SET(CMAKE_CXX_FLAGS "-std=c++11 -O2 -g -Wall ${CMAKE_CXX_FLAGS}")
+# Should be larger than version 14 to avoid ‘integer_sequence’ is not a member of ‘std’ error
+set(CMAKE_CXX_STANDARD 17)
 
 # Only Ceres itself should be compiled with CERES_BUILDING_SHARED_LIBRARY
 # defined, any users of Ceres will have CERES_USING_SHARED_LIBRARY defined
@@ -50,7 +51,6 @@ add_executable(helloworld helloworld.cc)
 target_link_libraries(helloworld ceres)
 
 #################
-
 add_executable(helloceres_1 helloceres_1.cc)
 target_link_libraries(helloceres_1 ceres)
 
@@ -59,6 +59,9 @@ target_link_libraries(helloceres_2 ceres)
 
 add_executable(helloceres_ed helloceres_euclidian_distance.cc)
 target_link_libraries(helloceres_ed ceres)
+
+add_executable(helloceres_rotation helloceres_small_angle_rotation.cc)
+target_link_libraries(helloceres_rotation ceres)
 
 add_executable(helloceres_pose2d helloceres_pose_2d.cc)
 target_link_libraries(helloceres_pose2d ceres)
