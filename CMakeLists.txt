@@ -51,17 +51,20 @@ add_executable(helloworld helloworld.cc)
 target_link_libraries(helloworld ceres)
 
 #################
-add_executable(helloceres_1 helloceres_1.cc)
-target_link_libraries(helloceres_1 ceres)
+add_executable(add_residual_1 add_residual_1.cc)
+target_link_libraries(add_residual_1 ceres)
 
-add_executable(helloceres_2 helloceres_2.cc)
-target_link_libraries(helloceres_2 ceres)
+add_executable(add_residual_2 add_residual_2.cc)
+target_link_libraries(add_residual_2 ceres)
 
-add_executable(helloceres_ed helloceres_euclidian_distance.cc)
-target_link_libraries(helloceres_ed ceres)
+add_executable(multivariate multivariate.cc)
+target_link_libraries(multivariate ceres)
 
-add_executable(helloceres_rotation helloceres_small_angle_rotation.cc)
-target_link_libraries(helloceres_rotation ceres)
+add_executable(pitch_estimation small_pitch_estimation.cc)
+target_link_libraries(pitch_estimation ceres)
+
+add_executable(se3_estimation se3_estimation.cc)
+target_link_libraries(se3_estimation ceres)
 
 add_executable(helloceres_pose2d helloceres_pose_2d.cc)
 target_link_libraries(helloceres_pose2d ceres)
@@ -72,5 +75,5 @@ target_link_libraries(helloceres_pose2d_fixed_a ceres)
 add_executable(helloceres_pose2d_fixed_b helloceres_pose_2d_fixed_b.cc)
 target_link_libraries(helloceres_pose2d_fixed_b ceres)
 #################
-
-
+add_executable(hello pass_by_address.cpp)
+target_link_libraries(hello ceres)
