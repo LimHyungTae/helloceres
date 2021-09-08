@@ -11,8 +11,19 @@ void foo(Eigen::Vector3d *b) {
     cout << (*b)(0) << ", " << (*b)(1) << ", " << (*b)(2) << endl;
 }
 
+void bar(double *b) {
+    cout << b[0] << ", " << b[1] << ", " << b[2] << endl;
+}
+
 int main() {
     Eigen::Vector3d a(0.0, 1.1, 1.3);
     foo(&a);
+
+    double *ts_est = (double *) malloc(3 * sizeof(double));
+    ts_est[0] = 0.0;
+    ts_est[1] = 1.0;
+    ts_est[2] = 0.0;
+    bar(ts_est);
+
     return 0;
 }

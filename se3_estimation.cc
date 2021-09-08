@@ -40,6 +40,61 @@ Eigen::Matrix3d getRx(const double rad) {
     return rot;
 }
 
+Eigen::Matrix3d vec2skew_symm(const Eigen::Vector3d &u) {
+    Eigen::Matrix3d skew_symm = Eigen::Matrix3d::Zero();
+    skew_symm(0, 1) = -u(2);
+    skew_symm(1, 0) = u(2);
+
+    skew_symm(0, 2) = u(1);
+    skew_symm(2, 0) = -u(1);
+
+    skew_symm(1, 2) = -u(0);
+    skew_symm(2, 1) = u(0);
+
+    return skew_symm;
+}
+
+Eigen::Matrix3d vec2SO3(double*rot_vec) {
+    double mag = 0;
+
+    mag += pow(rot_vec[0], 2);
+    mag += pow(rot_vec[1], 2);
+    mag += pow(rot_vec[2], 2);
+    mag                 = sqrt(mag);
+
+    Eigen::Vector3d u(rot_vec[0] / mag, rot_vec[1] / mag, rot_vec[2] / mag);
+    Eigen::Matrix3d R   = Eigen::Matrix3d::Identity();
+    Eigen::Matrix3d w_x = vec2skew_symm(u);
+    R += sin(mag) * w_x + (1 - cos(mag)) * w_x * w_x;
+    return R;
+}
+
+Eigen::Matrix4d est2SE3(double*rot_vec, double*ts) {
+    Eigen::Matrix3d R = vec2SO3(rot_vec);
+    Eigen::Matrix4d T = Eigen::Matrix4d::Identity();
+    T.block<3, 3>(0, 0) = R;
+
+    T(0, 3) = ts[0];
+    T(1, 3) = ts[1];
+    T(2, 3) = ts[2];
+    return T;
+}
+
+double calcTranslationError(Eigen::Matrix4d &rel4x4) {
+    double   ts_error = 0;
+    for (int i        = 0; i < 3; ++i) {
+        ts_error += rel4x4(i, 3) * rel4x4(i, 3);
+    }
+    ts_error          = sqrt(ts_error);
+    return ts_error;
+}
+
+// http://www.boris-belousov.net/2016/12/01/quat-dist/
+double calcRotationError(Eigen::Matrix4d &rel4x4) {
+    Eigen::Matrix3d rel_rot   = rel4x4.block<3, 3>(0, 0);
+    double          rot_error = acos((rel_rot.trace() - 1) / 2);
+    return rot_error;
+}
 
 struct SE3Residual {
     SE3Residual(
@@ -47,7 +102,7 @@ struct SE3Residual {
             Eigen::Vector3d tgt) : src_(src), tgt_(tgt) {}
 
     template<typename T>
-    bool operator()(const T *const rot_est, const T *const ts_est, T *residual) const {
+    bool operator()(const T*const rot_est, const T*const ts_est, T*residual) const {
         residual[0] = sqrt(pow(tgt_(0) - (src_(0) - rot_est[2] * src_(1) + rot_est[1] * src_(2) + ts_est[0]), 2)
                            + pow(tgt_(1) - (rot_est[2] * src_(0) + src_(1) - rot_est[0] * src_(2) + ts_est[1]), 2)
                            + pow(tgt_(2) - (rot_est[1] * src_(0) + rot_est[0] * src_(1) + src_(2) + ts_est[2]), 2));
@@ -62,7 +117,7 @@ private:
 
 using namespace std;
 
-int main(int argc, char **argv) {
+int main(int argc, char**argv) {
     google::InitGoogleLogging(argv[0]);
 
 
@@ -89,7 +144,7 @@ int main(int argc, char **argv) {
         src_h(3, i) = 1;
     }
 
-    double upper_small_angle_bound = 15.0;
+    double upper_small_angle_bound = 10.0;
     double upper_translation_bound = 5.0;
     int    num_repeat              = 20;
 
@@ -98,6 +153,9 @@ int main(int argc, char **argv) {
         std::uniform_real_distribution<double> unif_rot(-upper_small_angle_bound, upper_small_angle_bound);
         std::uniform_real_distribution<double> unif_ts(-upper_translation_bound, upper_translation_bound);
 
+        /*
+         * Generate Dummy SE(3)
+         */
         const double yaw_gt   = unif_rot(re) * M_PI / 180; // radian
         const double pitch_gt = unif_rot(re) * M_PI / 180; // radian
         const double roll_gt  = unif_rot(re) * M_PI / 180; // radian
@@ -112,13 +170,13 @@ int main(int argc, char **argv) {
         Eigen::Matrix3d Rx = getRx(roll_gt);
         rot_gt = Rz * Ry * Rx;
 
-        Eigen::Matrix4d se3_gt = Eigen::Matrix4d::Identity();
-        se3_gt.block<3, 3>(0, 0) = rot_gt;
-        se3_gt(0, 3)             = x_gt;
-        se3_gt(1, 3)             = y_gt;
-        se3_gt(2, 3)             = z_gt;
+        Eigen::Matrix4d T_gt = Eigen::Matrix4d::Identity();
+        T_gt.block<3, 3>(0, 0) = rot_gt;
+        T_gt(0, 3)             = x_gt;
+        T_gt(1, 3)             = y_gt;
+        T_gt(2, 3)             = z_gt;
 
-        Eigen::Matrix<double, 4, Eigen::Dynamic> tgt_h = se3_gt * src_h;
+        Eigen::Matrix<double, 4, Eigen::Dynamic> tgt_h = T_gt * src_h;
 
         // Homogeneous -> 3 x N
         Eigen::Matrix<double, 3, Eigen::Dynamic> src = src_h.topRows(3);
@@ -128,20 +186,20 @@ int main(int argc, char **argv) {
 
         Problem problem;
 
-        double *rot_est = (double *) malloc(3 * sizeof(double));
+        double*rot_est = (double*) malloc(3 * sizeof(double));
         rot_est[0] = 0.0;
         rot_est[1] = 0.0;
         rot_est[2] = 0.0;
 
-        double *ts_est = (double *) malloc(3 * sizeof(double));
+        double*ts_est = (double*) malloc(3 * sizeof(double));
         ts_est[0] = 0.0;
         ts_est[1] = 0.0;
         ts_est[2] = 0.0;
 
         for (int i = 0; i < num_pts; ++i) {
 
-            CostFunction *cost_function =
-                                 new AutoDiffCostFunction<SE3Residual, 1, 3, 3>(new SE3Residual(src.col(i), tgt.col(i)));
+            CostFunction*cost_function =
+                                new AutoDiffCostFunction<SE3Residual, 1, 3, 3>(new SE3Residual(src.col(i), tgt.col(i)));
             problem.AddResidualBlock(cost_function, nullptr, rot_est, ts_est);
         }
 
@@ -152,10 +210,14 @@ int main(int argc, char **argv) {
         Solve(options, &problem, &summary);
 
         std::cout << summary.BriefReport() << "\n";
+        Eigen::Matrix4d T_est = est2SE3(rot_est, ts_est);
+        Eigen::Matrix4d T_rel = T_est * T_gt.inverse();
 
-        cout<<x_gt<< ", "<< y_gt<< ", " <<z_gt<<endl;
-        cout<<ts_est[0]<< ", "<< ts_est[1]<< ", " <<ts_est[2]<<endl;
-//        cout << "GT: " << rot_angle_gt * 180 / M_PI << " deg, | Est: " << rot_angle_est * 180 / M_PI << "deg" << endl;
+        free(rot_est);
+        free(ts_est);
+
+        cout << "\033[1;32m ABS. size:"<< calcTranslationError(T_gt) << "m / " << calcRotationError(T_gt) * 180.0 / M_PI << "deg -> ";
+        cout << "Rel error: " << calcTranslationError(T_rel) << "m / " << calcRotationError(T_rel) * 180.0 / M_PI << "deg\033[0m" << endl;
     }
 
     return 0;

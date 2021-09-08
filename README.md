@@ -37,13 +37,8 @@ http://ceres-solver.org/installation.html 을 따라 하면 된다
 
 ### 코드 구성
 
-- **helloceres_1.cc**: Cost function을 2개 생성해서 addResidualBlock하여 여러 residual cost function에 추가하는 법
-- **helloceres_2.cc**: 하나의 cost function 내에서 여러 residual을 선언하는 법
-- **helloceres_euclidian_distance.cc**: 하나의 cost function에서 다변수를 입력값으로 주는 법
-- **helloceres_pose_2d.cc**: 실제로 2D 상의 pose a와 b에 대한 optimization을 하는 예제
-- **helloceres_pose_2d_fixed_a.cc**: helloceres_pose_2d.cc를 실행해보면 예상했던 것과 달리 a와 b 값 둘 다 변경됩니다. 그래서 pose a를 고정시키는 법과, 이걸 통해 SLAM을 하는 데에 있어서 initial Pose의 필요성에 대해 알 수 있습니다.
-- **helloceres_pose_2d_fixed_b.cc**: helloceres_pose_2d_fixed_a.cc에서는 residual을 추가하여 pose a에 더 강한 constraint를 줘서 고정시킨 반면, 이 예제에서는 ceres의 SetParameterBlockConstant()라는 function을 이용하여 a를 고정하는 방식에 대해 알게됩니다.
 
 ### 주의
 
-**helloceres_pose_2d.cc**와 **helloceres_pose_2d_fixed_a.cc**에서 원래는 measurements의 불확실성 또한 인자로 고려하기 위해 information matrix가 곱해져야 완전한 error term이 되지만, 여기서는 tool에 대한 설명을 위해 생략되었습니다. (실제 SLAM을 할 때에는 Ceres 기본 라이브러리 examples/slam/pose_graph_2d와 examples/slam/pose_graph_3d에 잘 되어 있어서 error term은 이 헤더파일들을 그대로 사용하시면 되고, 이 깃허브 페이지는 단순히 ceres를 어떻게 사용하는지에 대한 tutorial 자료입니다)
+![img](img/rot_no_convergence.png)
+

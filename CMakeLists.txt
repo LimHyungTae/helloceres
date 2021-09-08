@@ -75,5 +75,5 @@ target_link_libraries(helloceres_pose2d_fixed_a ceres)
 add_executable(helloceres_pose2d_fixed_b helloceres_pose_2d_fixed_b.cc)
 target_link_libraries(helloceres_pose2d_fixed_b ceres)
 #################
-add_executable(hello pass_by_address.cpp)
-target_link_libraries(hello ceres)
+add_executable(pass_by_address pass_by_address.cpp)
+target_link_libraries(pass_by_address ceres)
