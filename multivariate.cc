@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
     Problem problem;
     // ############## 매우 중요 ###############
-    // line 58에서는 이제 3, 3, 3이 되었는데,
+    // line 61에서는 이제 3, 3, 3이 되었는데,
     // 첫 번째 숫자는 optimization의 cost function을 구성하는 residual의 갯수를 의미하고
     // 그 이후의 숫자들은 cost function을 구성하는 변수의 수 N개 만큼 있는데, 각각은 각 변수를 구성하는 변수의 크기 n_i을 적어야 함
     // 이 상황에서는 N: 2 (a, b 두 개이므로 2개의 argument를 더 추가하는데), 각 argument는 a와 b의 변수의 크기 n_i: 3이어서 <> 안에 3, 3, 3이 들어감
