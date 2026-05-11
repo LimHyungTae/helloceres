@@ -49,8 +49,8 @@ int main(int argc, char **argv) {
     CostFunction *cost_function2 =
                          new AutoDiffCostFunction<CostFunctor2, 1, 1>(new CostFunctor2);
 
-    problem.AddResidualBlock(cost_function1, NULL, &x);
-    problem.AddResidualBlock(cost_function2, NULL, &x);
+    problem.AddResidualBlock(cost_function1, nullptr, &x);
+    problem.AddResidualBlock(cost_function2, nullptr, &x);
 
     // Run the solver!
     Solver::Options options;

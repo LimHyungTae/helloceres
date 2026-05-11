@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     // {2, 1} <- 이 숫자들의 의미가 각각 Cost function의 {residual의 수, 변수의 수}를 나타내는 것과 같다.
     CostFunction *cost_function =
                          new AutoDiffCostFunction<CostFunctor, 2, 1>(new CostFunctor);
-    problem.AddResidualBlock(cost_function, NULL, &x);
+    problem.AddResidualBlock(cost_function, nullptr, &x);
 
     Solver::Options options;
     options.function_tolerance           = 1e-10;

@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     CostFunction *cost_function =
                          new AutoDiffCostFunction<CostFunctor, 3, 3, 3>(new CostFunctor);
     // a, b Pointer이기 때문에 예제 1, 2와 달리 a, b 그대로 인풋으로 들어감
-    problem.AddResidualBlock(cost_function, NULL, a, b);
+    problem.AddResidualBlock(cost_function, nullptr, a, b);
 
     // Run the solver!
     Solver::Options options;
