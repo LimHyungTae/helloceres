@@ -240,10 +240,9 @@ int main(int argc, char**argv) {
         Eigen::Vector3d pos(0.0, 0.0, 0.0);
         Eigen::Quaterniond quat = quat_gt.inverse();
 
-        ceres::EigenQuaternionParameterization *quat_param = new ceres::EigenQuaternionParameterization();
-
-//        problem.AddParameterBlock(pos.data(), 3);
-//        problem.AddParameterBlock(quat.coeffs().data(), 4, quat_param);
+        // Ceres 2.x Manifold API (replaces deprecated LocalParameterization):
+        //   ceres::EigenQuaternionManifold quat_manifold;
+        //   problem.SetManifold(quat.coeffs().data(), &quat_manifold);
 
         for (int i = 0; i < num_pts; ++i) {
 
