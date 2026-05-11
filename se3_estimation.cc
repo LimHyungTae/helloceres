@@ -133,9 +133,9 @@ struct SE3Residual {
 //        residual[0] = sqrt(pow(tgt_(0) - (src_(0) - rot_est[2] * src_(1) + rot_est[1] * src_(2) + ts_est[0]), 2)
 //                           + pow(tgt_(1) - (rot_est[2] * src_(0) + src_(1) - rot_est[0] * src_(2) + ts_est[1]), 2)
 //                           + pow(tgt_(2) - (rot_est[1] * src_(0) + rot_est[0] * src_(1) + src_(2) + ts_est[2]), 2));
-        residual[0] = tgt_(0) - (src_(0) - (*rot_est)[2] * src_(1) + (*rot_est)[1] * src_(2) + (*ts_est)[0]);
-        residual[1] = tgt_(1) - ((*rot_est)[2] * src_(0) + src_(1) - (*rot_est)[0] * src_(2) + (*ts_est)[1]);
-        residual[2] = tgt_(2) - (-(*rot_est)[1] * src_(0) + (*rot_est)[0] * src_(1) + src_(2) + (*ts_est)[2]);
+        residual[0] = tgt_(0) - (src_(0) - rot_est[2] * src_(1) + rot_est[1] * src_(2) + ts_est[0]);
+        residual[1] = tgt_(1) - (rot_est[2] * src_(0) + src_(1) - rot_est[0] * src_(2) + ts_est[1]);
+        residual[2] = tgt_(2) - (-rot_est[1] * src_(0) + rot_est[0] * src_(1) + src_(2) + ts_est[2]);
 
         return true;
     }
@@ -227,7 +227,7 @@ int main(int argc, char**argv) {
 
             CostFunction*cost_function =
                                 new AutoDiffCostFunction<SE3Residual, 3, 3, 3>(new SE3Residual(src.col(i), tgt.col(i)));
-            problem.AddResidualBlock(cost_function, nullptr, &rot_est, &ts_est);
+            problem.AddResidualBlock(cost_function, nullptr, rot_est.data(), ts_est.data());
         }
 
         // Run the solver!
