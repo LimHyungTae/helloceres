@@ -1,4 +1,11 @@
 cmake-build-release/
 cmake-build-debug/
 
+# Out-of-source build directories
+build/
+build_*/
+
+# IDE / OS
 .idea/
+.vscode/
+.DS_Store
