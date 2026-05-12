@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>Hello Ceres! (한글.ver)</h1>
+<h1>Hello Ceres!</h1>
 
 <img src="https://img.shields.io/badge/Ubuntu%2022.04-passing-brightgreen?logo=ubuntu" alt="Ubuntu 22.04"/>
 <img src="https://img.shields.io/badge/Ubuntu%2024.04-passing-brightgreen?logo=ubuntu" alt="Ubuntu 24.04"/>
@@ -8,7 +8,9 @@
 <img src="https://img.shields.io/badge/Ceres-2.x-blue" alt="Ceres 2.x"/>
 <img src="https://img.shields.io/badge/C%2B%2B-17-blue?logo=cplusplus" alt="C++17"/>
 
-<p><strong><em>A step-by-step Ceres Solver tutorial for Graph SLAM, in Korean.</em></strong></p>
+<p><strong><em>A step-by-step Ceres Solver tutorial for Graph SLAM.</em></strong></p>
+
+<p>🇰🇷 <a href="README_ko.md">한국어 README</a></p>
 
 </div>
 
@@ -18,25 +20,25 @@ ______________________________________________________________________
 
 ## :rocket: Overview
 
-C++의 optimization library인 Ceres Solver에 대한 Tutorial입니다.
+This is a tutorial for Ceres Solver, a C++ optimization library.
 
-수식적으로 optimization이나 C++ 문법에 대한 상세한 설명보다는 오롯이 **어떻게 쓰는지**에 대한 tutorial입니다.
+Rather than diving into the mathematical details of optimization or C++ syntax, this tutorial focuses purely on **how to use** Ceres Solver in practice.
 
-Graph SLAM의 optimization 부분이 친근하지 않은 분들께 설명을 위한 자료입니다. 이론 상으로 Graph SLAM을 공부하면 엄청난 수식(?)들에 압도당하기 쉬운데, 사실 non-linear optimization을 Ceres가 해주고 Error term도 Ceres에서 이미 `examples/slam/pose_graph_2d`와 `examples/slam/pose_graph_3d` 경로에 있기 때문에 저희는 사용만 하면 됩니다. :)
+It is intended for those who are not yet comfortable with the optimization part of Graph SLAM. In theory, studying Graph SLAM can be overwhelming because of the heavy equations, but in practice Ceres handles the non-linear optimization for us, and the error terms are already provided in `examples/slam/pose_graph_2d` and `examples/slam/pose_graph_3d`, so all we need to do is use them. :)
 
-이 레포지토리는 Graph SLAM을 low-level부터 짜고 싶은데, C++ 코드에 익숙치 않아 어려움을 겪으시는 분들께 도움이 될것이라 생각합니다. Step-by-step으로 Ceres Solver를 어떻게 사용하는지 설명드릴 예정입니다.
+This repository is meant to help those who want to write Graph SLAM from the low level but find C++ code intimidating. It walks through how to use Ceres Solver step by step.
 
 ______________________________________________________________________
 
 ## :books: Table of Contents
 
-* **EX 1**: [helloworld.cc](https://github.com/LimHyungTae/helloceres/blob/master/helloworld.cc): 가장 간단한 예시
-* **EX 2-1**: [add_residual_1.cc](https://github.com/LimHyungTae/helloceres/blob/master/add_residual_1.cc): 추가적인 CostFunctor 만들기
-* **EX 2-2**: [add_residual_2.cc](https://github.com/LimHyungTae/helloceres/blob/master/add_residual_2.cc): 여러 CostFunctor를 하나의 cost function으로 합치기
-* **EX 3**: [multivariate.cc](https://github.com/LimHyungTae/helloceres/blob/master/multivariate.cc): 다변수를 인풋으로 받는 방법
-* **EX 4-1**: [helloceres_pose_2d.cc](https://github.com/LimHyungTae/helloceres/blob/master/helloceres_pose_2d.cc): 두 2D 상의 pose들 최적화하기
-* **EX 4-2**: [helloceres_pose_2d_fixed_a.cc](https://github.com/LimHyungTae/helloceres/blob/HEAD/helloceres_pose_2d_fixed_a.cc): 변수 고정하는 방법 (잘 쓰이지 않음)
-* **EX 4-3**: [helloceres_pose_2d_fixed_b.cc](https://github.com/LimHyungTae/helloceres/blob/HEAD/helloceres_pose_2d_fixed_a.cc): 변수 고정하는 방법 (일반적인 방식)
+* **EX 1**: [helloworld.cc](https://github.com/LimHyungTae/helloceres/blob/master/helloworld.cc): The simplest example
+* **EX 2-1**: [add_residual_1.cc](https://github.com/LimHyungTae/helloceres/blob/master/add_residual_1.cc): Adding an extra CostFunctor
+* **EX 2-2**: [add_residual_2.cc](https://github.com/LimHyungTae/helloceres/blob/master/add_residual_2.cc): Combining multiple CostFunctors into a single cost function
+* **EX 3**: [multivariate.cc](https://github.com/LimHyungTae/helloceres/blob/master/multivariate.cc): Taking multiple variables as input
+* **EX 4-1**: [helloceres_pose_2d.cc](https://github.com/LimHyungTae/helloceres/blob/master/helloceres_pose_2d.cc): Optimizing two 2D poses
+* **EX 4-2**: [helloceres_pose_2d_fixed_a.cc](https://github.com/LimHyungTae/helloceres/blob/HEAD/helloceres_pose_2d_fixed_a.cc): Fixing variables (uncommon approach)
+* **EX 4-3**: [helloceres_pose_2d_fixed_b.cc](https://github.com/LimHyungTae/helloceres/blob/HEAD/helloceres_pose_2d_fixed_a.cc): Fixing variables (common approach)
 * **EX-5**: ...
 
 ______________________________________________________________________
